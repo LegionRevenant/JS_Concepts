@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Meme Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #ff7e5f, #feb47b); 
+            color: #ffffff; 
+            transition: color 0.5s; 
+        }
+        #meme {
+            margin-top: 20px;
+            max-width: 80%; 
+            height: auto; 
+        }
+        #fetchMemeBtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffffff; 
+            color: #ff7e5f; 
+            transition: background-color 0.5s, color 0.5s; 
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">Random Meme Generator</h1>
+    <button id="fetchMemeBtn">Generate Random Meme</button>
+    <img id="meme" src="" alt="Meme will appear here" />
+
+    <script>
+        const button = document.getElementById('fetchMemeBtn');
+        const memeImg = document.getElementById('meme');
+        const title = document.getElementById('title');
+
+        button.addEventListener('click', function() {
+            fetch('https://api.imgflip.com/get_memes')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const memes = data.data.memes; 
+                    const randomMeme = memes[Math.floor(Math.random() * memes.length)]; 
+                    memeImg.src = randomMeme.url; 
+                })
+                .catch(error => {
+                    memeImg.alt = 'Error fetching meme: ' + error.message;
+                });
+
+        setInterval(() => {
+            title.style.color = '#' + Math.floor(Math.random()*16777215).toString(16); 
+            button.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16); 
+            button.style.color = '#' + Math.floor(Math.random()*16777215).toString(16); 
+        }, 1000);
+        });
+    </script>
+</body>
+</html>

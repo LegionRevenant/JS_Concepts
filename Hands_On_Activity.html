@@ -38,11 +38,13 @@
     <h1 id="title">Random Meme Generator</h1>
     <button id="fetchMemeBtn">Generate Random Meme</button>
     <img id="meme" src="" alt="Meme will appear here" />
+    <p id="memeName"></p> <!-- New element for meme name -->
 
     <script>
         const button = document.getElementById('fetchMemeBtn');
         const memeImg = document.getElementById('meme');
         const title = document.getElementById('title');
+        const memeName = document.getElementById('memeName'); // New element for meme name
 
         button.addEventListener('click', function() {
             fetch('https://api.imgflip.com/get_memes')
@@ -56,16 +58,17 @@
                     const memes = data.data.memes; 
                     const randomMeme = memes[Math.floor(Math.random() * memes.length)]; 
                     memeImg.src = randomMeme.url; 
+                    memeName.textContent = randomMeme.name; // Set meme name
                 })
                 .catch(error => {
                     memeImg.alt = 'Error fetching meme: ' + error.message;
                 });
 
-        setInterval(() => {
-            title.style.color = '#' + Math.floor(Math.random()*16777215).toString(16); 
-            button.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16); 
-            button.style.color = '#' + Math.floor(Math.random()*16777215).toString(16); 
-        }, 1000);
+                setInterval(() => {
+                title.style.color = '#' + Math.floor(Math.random()*16777215).toString(16); 
+                button.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16); 
+                button.style.color = '#' + Math.floor(Math.random()*16777215).toString(16); 
+            }, 1000);
         });
     </script>
 </body>
